@@ -1,0 +1,15 @@
+{
+  "name": "task_manager",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./cli/task_cli.js",
+  "scripts": {
+    "task": "node ./cli/task_cli.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.1.0"
+  }
+}
