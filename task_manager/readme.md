@@ -8,6 +8,7 @@ The Task Manager CLI is a command-line interface application for managing tasks.
 
 - **Add Task**: Add a new task with a description.
 - **Delete Task**: Delete a task by its ID.
+- **Update Tasks**: Update a task by its ID, using as second parameter the description you want to update.
 - **Mark In-Progress**: Mark a task as in-progress by its ID.
 - **Mark Done**: Mark a task as done by its ID.
 - **List Tasks**: List all tasks or filter tasks by their status (all, todo, in-progress).
