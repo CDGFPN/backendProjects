@@ -1,6 +1,3 @@
-// Define static URL to fetch data from for tests
-const url: string = 'https://api.github.com/users/CDGFPN/events';
-
 let jsonData: any = {};
 
 type FetchOptions = RequestInit;
@@ -16,14 +13,16 @@ const fetchWithTimeout = (url: string, options?: FetchOptions, timeout: number =
   ]);
 };
 
-const fetchData = async (): Promise<void> => {
+const fetchData = async (username: string): Promise<void> => {
   try {
-    const response: FetchResponse = await fetchWithTimeout(url);
+    const response: FetchResponse = await fetchWithTimeout(`https://api.github.com/users/${username}/events`);
 
     if (!response.ok) {
       throw new Error('Network response was not ok ' + response.statusText);
     }
-
+    if (response.status === 404) {
+      throw new Error('User not found. Please check the username and try again.');
+    }
     jsonData = await response.json();
     console.log('Data fetched and stored:', jsonData);
   } catch (error) {

@@ -8,9 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// Define the URL to fetch data from
-const url = 'https://api.github.com/users/CDGFPN/events';
-// Create an object to store the JSON data
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.fetchData = void 0;
 let jsonData = {};
 // Function to fetch data with timeout
 const fetchWithTimeout = (url, options, timeout = 8000) => {
@@ -19,11 +18,14 @@ const fetchWithTimeout = (url, options, timeout = 8000) => {
         new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeout))
     ]);
 };
-const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
+const fetchData = (username) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield fetchWithTimeout(url);
+        const response = yield fetchWithTimeout(`https://api.github.com/users/${username}/events`);
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
+        }
+        if (response.status === 404) {
+            throw new Error('User not found. Please check the username and try again.');
         }
         jsonData = yield response.json();
         console.log('Data fetched and stored:', jsonData);
@@ -32,4 +34,4 @@ const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
         console.error('There was a problem with the fetch operation:', error);
     }
 });
-fetchData();
+exports.fetchData = fetchData;
