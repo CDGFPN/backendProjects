@@ -35,7 +35,7 @@ const handleHelp = () => {
     console.log("help - Show this help message");
     console.log("list <username> - List all GitHub API events from a user");
     console.log("list <username> <choices> - List specific data from a user. Choices include:");
-    listEventNames();
+    listDataNames();
     console.log("exit - Exit the CLI");
 };
 const handleUnknownCommand = (command) => {
@@ -44,6 +44,7 @@ const handleUnknownCommand = (command) => {
 };
 const isValidEventType = (eventType) => {
     const validEventTypes = new Set([
+        "repo",
         "pushevent",
         "createevent",
         "deleteevent",
@@ -57,7 +58,7 @@ const isValidEventType = (eventType) => {
     ]);
     return validEventTypes.has(eventType.toLowerCase());
 };
-const listEventNames = () => {
+const listDataNames = () => {
     console.log('- "pushevent" to list all Push Events');
     console.log('- "createevent" to list all Create Events');
     console.log('- "deleteevent" to list all Delete Events');
@@ -70,21 +71,21 @@ const listEventNames = () => {
     console.log('- "memberevent" to list all Member Events');
 };
 const handleListCommand = (args) => {
-    if (args.length > 3) {
+    if (args.length === 1 || args.length > 3) {
         console.log("Invalid number of arguments for list command. Expected maximum of: 2 (username and/or specific data type)");
         return;
     }
+    const username = args[1].toLowerCase();
     if (args.length === 3) {
-        const specificCommand = args[2].toLowerCase();
-        if (isValidEventType(specificCommand) === false) {
+        const eventType = args[2].toLowerCase();
+        if (isValidEventType(eventType) === false) {
             console.log("Invalid choice for list, choices are: ");
-            listEventNames();
+            listDataNames();
             return;
         }
-        console.log(specificCommand);
+        (0, githubService_1.fetchData)(username, eventType);
         return;
     }
-    const username = args[1].toLowerCase();
     (0, githubService_1.fetchData)(username);
 };
 // Command parsing and execution

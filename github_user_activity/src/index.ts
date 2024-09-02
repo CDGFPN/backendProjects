@@ -14,19 +14,20 @@ const handleHelp = () => {
   console.log(
     "list <username> <choices> - List specific data from a user. Choices include:"
   );
-  listEventNames();
+  listDataNames();
   console.log("exit - Exit the CLI");
 };
 
 const handleUnknownCommand = (command: string) => {
   console.log(`Unknown command: ${command}`);
   console.log(
-    'Type "help" for a list of available commands, and --h after a command to learn about it better.'
+    'Type "help" for a list of available commands.'
   );
 };
 
 const isValidEventType = (eventType: string): boolean => {
   const validEventTypes = new Set([
+    "repo",
     "pushevent",
     "createevent",
     "deleteevent",
@@ -42,7 +43,7 @@ const isValidEventType = (eventType: string): boolean => {
   return validEventTypes.has(eventType.toLowerCase());
 };
 
-const listEventNames = () => {
+const listDataNames = () => {
   console.log('- "pushevent" to list all Push Events');
   console.log('- "createevent" to list all Create Events');
   console.log('- "deleteevent" to list all Delete Events');
@@ -56,23 +57,23 @@ const listEventNames = () => {
 };
 
 const handleListCommand = (args: string[]) =>{
-  if (args.length > 3) {
+  if (args.length === 1 || args.length > 3 ) {
     console.log(
       "Invalid number of arguments for list command. Expected maximum of: 2 (username and/or specific data type)"
     );
     return
   }
+  const username: string = args[1].toLowerCase();
   if (args.length === 3) {
-    const specificCommand: string = args[2].toLowerCase();
-    if (isValidEventType(specificCommand) === false) {
+    const eventType: string = args[2].toLowerCase();
+    if (isValidEventType(eventType) === false) {
       console.log("Invalid choice for list, choices are: ");
-      listEventNames();
+      listDataNames();
       return
     }
-    console.log(specificCommand);
+    fetchData(username, eventType);
     return
   } 
-  const username: string = args[1].toLowerCase();
   fetchData(username);
 }
 
